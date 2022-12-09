@@ -8,8 +8,8 @@ env:
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
 
 jobs:
-  build:
-    name: Build
+  push:
+    name: Push
     runs-on: ubuntu-latest
 
     steps:
@@ -27,14 +27,6 @@ jobs:
 
       - name: Pack project
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:NuspecFile=./NIX.Analyzers.nuspec --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
-
-  push:
-    name: Push
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Save package to artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: nupkgs
-          path: ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg
+  
+      - name: Push package
+        run: dotnet push
