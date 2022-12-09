@@ -13,7 +13,7 @@ on:
 
 env:
   NUGET_PROJECT_PATH: nuget/NIX.Analyzers/NIX.Analyzers.csproj
-  PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace\output }}
+  PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
