@@ -6,6 +6,7 @@ on:
 env:
   NUGET_PROJECT_PATH: nuget/NIX.Analyzers
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
+  NUGET_AUTH_TOKEN: lgxftpjixdufqvi56ptc4boc7gxoweux27fqs7rxukkm3auo3okq
 
 jobs:
   push:
@@ -29,4 +30,4 @@ jobs:
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:NuspecFile=./NIX.Analyzers.nuspec --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
   
       - name: Push package
-        run: dotnet push
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg --source "https://pkgs.dev.azure.com/mykhailozhmaitsev/_packaging/mykhailozhmaitsev/nuget/v3/index.json" --api-key ${{ env.NUGET_AUTH_TOKEN }}
