@@ -34,5 +34,8 @@ jobs:
       - name: Pack project
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:NuspecFile=./NIX.Analyzers.nuspec --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
   
+      - name: Print new build number
+        run: echo "Build number is ${{github.run_number}}"
+
       - name: Push package
         run: dotnet nuget push --api-key AzureArtifacts ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg
