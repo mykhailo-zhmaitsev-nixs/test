@@ -42,7 +42,7 @@ jobs:
         run: echo "Build number is ${{github.run_number}} ${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}.$BUILD_NUMBER"
 
       - name: Pack project
-        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}.$BUILD_NUMBER --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}.$(($BUILD_NUMBER-1)) --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
   
       - name: Push package
         run: dotnet nuget push --api-key AzureArtifacts ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg
