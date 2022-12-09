@@ -21,7 +21,7 @@ jobs:
       - name: Install dotnet
         uses: actions/setup-dotnet@v1
         with:
-e          source-url: ${{ env.AZURE_ARTIFACTS_FEED_URL }}
+          source-url: ${{ env.AZURE_ARTIFACTS_FEED_URL }}
         env:
           NUGET_AUTH_TOKEN: ${{ env.AZURE_DEVOPS_TOKEN }} 
 
