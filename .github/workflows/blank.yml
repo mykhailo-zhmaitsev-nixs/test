@@ -35,7 +35,7 @@ jobs:
         run: dotnet restore ${{ env.NUGET_PROJECT_PATH }}
 
       - name: Build project
-        run: dotnet build dotnet restore ${{ env.NUGET_PROJECT_PATH }} --no-restore -- configuration Release
+        run: dotnet build ${{ env.NUGET_PROJECT_PATH }} --no-restore -- configuration Release
 
       - name: Pack project
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }} /p:NuspecFile=./nuget/NIX.Analyzers/NIX.Analyzers.nuspec --no-restore --no-build
