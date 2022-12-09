@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IncludeBuildOutput>false</IncludeBuildOutput>
@@ -24,6 +24,9 @@
 
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
     <NoDefaultExcludes>true</NoDefaultExcludes>
+
+    <NuspecFile>NIX.Analyzers.nuspec</NuspecFile>
+    <NuspecProperties>version=$(PackageVersion)</NuspecProperties>
   </PropertyGroup>
 
   <ItemGroup>
