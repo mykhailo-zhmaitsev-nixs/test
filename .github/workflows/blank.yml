@@ -39,9 +39,9 @@ jobs:
         run: dotnet build ${{ env.NUGET_PROJECT_PATH }} --no-restore
 
       - name: Pack project
-        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }} /p:NuspecFile=nuget/NIX.Analyzers/NIX.Analyzers.nuspec --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }} /p:NuspecFile=nuget/NIX.Analyzers/NIX.Analyzers.nuspec --no-restore --no-build --output nuget/NIX.Analyzers/
 
-      - name: Save nuget package to artofacts
+      - name: Save nuget package to artifacts
         uses: actions/upload-artifact@v3
         with:
           name: saved
