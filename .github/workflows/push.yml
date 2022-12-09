@@ -31,9 +31,6 @@ jobs:
       - name: Build project
         run: dotnet build ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj --no-restore
 
-      - name: Pack project
-        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:NuspecFile=./NIX.Analyzers.nuspec --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
-  
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
@@ -44,5 +41,9 @@ jobs:
       - name: Print new build number
         run: echo "Build number is ${{github.run_number}} ${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}.$BUILD_NUMBER"
 
+      - name: Pack project
+        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:NuspecFile=./NIX.Analyzers.nuspec --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }} --version-suffix ${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}.$BUILD_NUMBER
+  
       - name: Push package
         run: dotnet nuget push --api-key AzureArtifacts ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg
+        
