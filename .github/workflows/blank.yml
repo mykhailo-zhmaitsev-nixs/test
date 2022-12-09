@@ -24,10 +24,10 @@ jobs:
         run: dotnet restore ${{ env.NUGET_PROJECT_PATH }}
 
       - name: Build project
-        run: dotnet build ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj --no-restore --configuration Release
+        run: dotnet build ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj --no-restore
 
       - name: Pack project
-        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:NuspecFile=./NIX.Analyzers.nuspec --no-restore --no-build --configuration Release --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:NuspecFile=./NIX.Analyzers.nuspec --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
       - name: Save package to artifacts
         uses: actions/upload-artifact@v3
