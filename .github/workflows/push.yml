@@ -6,7 +6,7 @@ on:
 env:
   NUGET_PROJECT_PATH: nuget/NIX.Analyzers
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
-  AZURE_DEVOPS_TOKEN: lgxftpjixdufqvi56ptc4boc7gxoweux27fqs7rxukkm3auo3okq
+  AZURE_DEVOPS_TOKEN: whzryfy52dtg6opjrhmtj6oei7dod45p7fkshubrjdrkicfymdma
   AZURE_ARTIFACTS_FEED_URL: https://pkgs.dev.azure.com/mykhailozhmaitsev/_packaging/mykhailozhmaitsev/nuget/v3/index.json
 
 jobs:
