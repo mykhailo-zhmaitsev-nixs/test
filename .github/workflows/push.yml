@@ -41,7 +41,7 @@ jobs:
         uses: einaregilsson/build-number@v3
         with:
           token: ${{ secrets.github_token }}
-          prefix: ${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
+          prefix: ${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}
   
       - name: Print new build number
         run: echo "Build number is ${{github.run_number}} ${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}.$BUILD_NUMBER"
