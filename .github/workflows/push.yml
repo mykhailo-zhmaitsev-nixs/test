@@ -24,6 +24,11 @@ jobs:
           source-url: ${{ env.AZURE_ARTIFACTS_FEED_URL }}
         env:
           NUGET_AUTH_TOKEN: ${{ env.AZURE_DEVOPS_TOKEN }} 
+          
+      - name: Set Environment Variables
+        uses: ./.github/actions/setvars
+        with:
+          varFilePath: ./.github/variables/versioning.env
 
       - name: Restore packages
         run: dotnet restore ${{ env.NUGET_PROJECT_PATH }}
@@ -39,10 +44,10 @@ jobs:
           prefix: ${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}
   
       - name: Print new build number
-        run: echo "Build number is ${{github.run_number}} ${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}.$BUILD_NUMBER"
+        run: echo "Build number is ${{github.run_number}} ${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}.$BUILD_NUMBER"
 
       - name: Pack project
-        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ secrets.MAJOR_VERSION }}.${{ secrets.MINOR_VERSION }}.$(($BUILD_NUMBER-1)) --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}.$(($BUILD_NUMBER-1)) --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
   
       - name: Push package
         run: dotnet nuget push --api-key AzureArtifacts ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg
