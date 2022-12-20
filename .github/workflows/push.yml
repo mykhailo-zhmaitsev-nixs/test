@@ -6,8 +6,6 @@ on:
 env:
   NUGET_PROJECT_PATH: nuget/NIX.Analyzers
   PACKAGE_OUTPUT_DIRECTORY: ${{ github.workspace }}/output
-  AZURE_DEVOPS_TOKEN: vjspc26dxtwmqd3ymqdk7hviw4smenwherjrunbsskxexnbfuqqa
-  AZURE_ARTIFACTS_FEED_URL: https://pkgs.dev.azure.com/mykhailozhmaitsev/_packaging/mykhailozhmaitsev/nuget/v3/index.json
 
 jobs:
   push:
@@ -20,10 +18,6 @@ jobs:
 
       - name: Install dotnet
         uses: actions/setup-dotnet@v1
-        with:
-          source-url: ${{ env.AZURE_ARTIFACTS_FEED_URL }}
-        env:
-          NUGET_AUTH_TOKEN: ${{ env.AZURE_DEVOPS_TOKEN }} 
           
       - name: Set Environment Variables
         uses: ./.github/actions/setvars
@@ -42,13 +36,9 @@ jobs:
         with:
           token: ${{ secrets.github_token }}
           prefix: ${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}
-  
-      - name: Print new build number
-        run: echo "Build number is ${{github.run_number}} ${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}.$BUILD_NUMBER"
 
       - name: Pack project
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ env.MAJOR_VERSION }}.${{ env.MINOR_VERSION }}.$(($BUILD_NUMBER-1)) --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
   
       - name: Push package
-        run: dotnet nuget push --api-key AzureArtifacts ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg
-        
+        run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
