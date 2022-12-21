@@ -34,15 +34,15 @@ jobs:
         uses: WyriHaximus/github-action-get-previous-tag@v1
           
       - name: Set version
-        uses: 2428392/gh-truncate-string-action@v1.1.0
         id: version
+        uses: mad9000/actions-find-and-replace-string@2
         with:
-          stringToTruncate: ${{ steps.previoustag.outputs.tag }}
-          maxLength: 100
-          removeDanglingCharacters: 'v'
+            source: ${{ steps.previoustag.outputs.tag }} # this translates to ref/heads/main on the main branch, but can be any arbitrary string 
+            find: 'v'        # we want to remove ref/heads/ from source 
+            replace: ''               # and replace it with a blank string (ie. removing it)
 
       - name: Pack project
-        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ steps.version.outputs.string }} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ steps.version.outputs.value }} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
       - name: Push package
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
