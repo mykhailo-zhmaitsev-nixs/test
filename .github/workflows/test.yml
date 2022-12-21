@@ -37,9 +37,9 @@ jobs:
         id: version
         uses: mad9000/actions-find-and-replace-string@2
         with:
-            source: ${{ steps.previoustag.outputs.tag }} # this translates to ref/heads/main on the main branch, but can be any arbitrary string 
-            find: 'v'        # we want to remove ref/heads/ from source 
-            replace: ''               # and replace it with a blank string (ie. removing it)
+            source: ${{ steps.previoustag.outputs.tag }}
+            find: 'v'
+            replace: ''
 
       - name: Pack project
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ steps.version.outputs.value }} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
