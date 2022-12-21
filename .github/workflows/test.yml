@@ -35,7 +35,7 @@ jobs:
         
       - name: 'Set version'
         run: | 
-          TAG=${{ github.event.release.tag_name }}
+          TAG=${{ steps.previoustag.outputs.tag }}
           echo "VERSION=${TAG#v}" >> $GITHUB_ENV
 
       - name: Pack project
