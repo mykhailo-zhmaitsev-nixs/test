@@ -19,9 +19,6 @@ jobs:
       - name: Install dotnet
         uses: actions/setup-dotnet@v1
 
-      - name: Restore packages
-        run: dotnet restore ${{ env.NUGET_PROJECT_PATH }}
-
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
