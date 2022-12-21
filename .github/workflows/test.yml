@@ -38,6 +38,7 @@ jobs:
         id: version
         with:
           stringToTruncate: ${{ steps.previoustag.outputs.tag }}
+          maxLength: 100
           removeDanglingCharacters: 'v'
 
       - name: Pack project
