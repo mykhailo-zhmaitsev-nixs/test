@@ -32,9 +32,14 @@ jobs:
       - name: 'Get Previous tag'
         id: previoustag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        
+      - name: 'Set version'
+        run: | 
+          TAG=${{ github.event.release.tag_name }}
+          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
 
       - name: Pack project
-        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${${{ steps.previoustag.outputs.tag }}#v} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${VERSION} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
       - name: Push package
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
