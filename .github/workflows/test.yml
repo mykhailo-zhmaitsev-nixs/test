@@ -29,17 +29,19 @@ jobs:
         with:
           fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
       
-      - name: 'Get Previous tag'
+      - name: Get Previous tag
         id: previoustag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        
-      - name: 'Set version'
-        run: | 
-          VERSION=${{ steps.previoustag.outputs.tag }}
-          echo "VERSION=${VERSION:1}" >> $GITHUB_ENV
+        uses: WyriHaximus/github-action-get-previous-tag@v1
+          
+      - name: Set version
+        uses: 2428392/gh-truncate-string-action@v1.1.0
+        id: version
+        with:
+          stringToTruncate: ${{ steps.previoustag.outputs.tag }}
+          removeDanglingCharacters: 'v'
 
       - name: Pack project
-        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${VERSION} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
+        run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ steps.version.outputs.string }} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
 
       - name: Push package
         run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIRECTORY }}/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
