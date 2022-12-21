@@ -35,8 +35,8 @@ jobs:
         
       - name: 'Set version'
         run: | 
-          TAG=${{ steps.previoustag.outputs.tag }}
-          echo "VERSION=${TAG#v}" >> $GITHUB_ENV
+          VERSION=${{ steps.previoustag.outputs.tag }}
+          echo "VERSION=${VERSION:1}" >> $GITHUB_ENV
 
       - name: Pack project
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${VERSION} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
