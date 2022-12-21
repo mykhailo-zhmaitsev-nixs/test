@@ -28,6 +28,8 @@ jobs:
       - name: 'Get Version'
         id: version
         uses: battila7/get-version-action@v2
+        
+      - run: echo ${{ steps.version.outputs.version-without-v }}
 
       - name: Pack project
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ steps.version.outputs.version-without-v }} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
