@@ -25,11 +25,15 @@ jobs:
       - name: Build project
         run: dotnet build ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj --no-restore
 
-      - name: Get Version
-        id: get_version
-        uses: battila7/get-version-action@v2.2.1
-
-      - run: echo ${{ steps.get_version.outputs.version-without-v }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
+      
+      - name: 'Get Previous tag'
+        id: previoustag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 1.0.0 # Optional fallback tag to use when no tag can be found
 
       - name: Pack project
         run: dotnet pack ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj /p:PackageVersion=${{ steps.version.outputs.version-without-v }} --no-restore --no-build --output ${{ env.PACKAGE_OUTPUT_DIRECTORY }}
