@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+            fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
 
       - name: Install dotnet
         uses: actions/setup-dotnet@v1
@@ -25,10 +27,6 @@ jobs:
       - name: Build project
         run: dotnet build ${{ env.NUGET_PROJECT_PATH }}/NIX.Analyzers.csproj --no-restore
         
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Required due to the way Git works, without it this action won't be able to find any or the correct tags
-      
       - name: Get Previous tag
         id: previoustag
         uses: WyriHaximus/github-action-get-previous-tag@v1
